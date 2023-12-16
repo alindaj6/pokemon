@@ -16,13 +16,14 @@ class PokemonDetailViewModel {
     func catchPokemon(pokemonStatus: PokemonStatus) {
         self.isLoading.value = true
         let pokeApiProvider = ServiceHelper.provider(for: PokeApi.self)
-        pokeApiProvider.request(.catch) { result in
+        pokeApiProvider.request(.catch(chance: PokemonSession.shared.catchChance.value)) { result in
             switch result {
             case .success(let response):
                 self.isLoading.value = false
                 do {
                     let filteredResponse = try response.filterSuccessfulStatusCodes()
                     let catchPoke = try! filteredResponse.map(CatchReleasePoke.self)
+                    PokemonSession.shared.catchChance.value += 1
                     if catchPoke.isSuccess {
                         self.catchPokemonSuccess.value = pokemonStatus
                     } else {

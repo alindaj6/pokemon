@@ -12,7 +12,7 @@ public enum PokeApi {
     case pokemons(offset: Int, limit: Int)
     case pokemonStat(name: String)
 
-    case `catch`
+    case `catch`(chance: Int)
     case release
     case rename(index: Int)
 }
@@ -35,8 +35,8 @@ extension PokeApi: PokemonApi {
             return "pokemon"
         case .pokemonStat(let name):
             return "pokemon/\(name)"
-        case .catch:
-            return "catch"
+        case .catch(let chance):
+            return "catch/\(chance)"
         case .release:
             return "release"
         case .rename(let index):

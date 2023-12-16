@@ -126,6 +126,13 @@ extension PokemonDetailController {
                     let textField = alert?.textFields?.first
 
                     if let text = textField?.text, !text.isEmpty {
+                        if !PokemonSession.shared.myPokemons.value.isEmpty {
+                            if let _ = PokemonSession.shared.myPokemons.value.filter({ $0.nickname == text }).first {
+                                Notifier.alert(type: .error(message: "Cannot Use The Same Name"))
+                                return
+                            }
+                        }
+
                         let myPokemons = MyPokemon(status: pokemonStatus,
                                                    nickname: text,
                                                    index: -1, nextIndex: 1,
